@@ -7,11 +7,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useState } from "react";
 
 function App() {
+  const [isLogged, setIsLogged] = useState(0)
   const [isNewPage, setNewPage] = useState(0)
   const example = () => {
     const result = []
     //api에서 받아온 json을 풀어서 저 형태로 넣어서 반환하면 됨
-    const size = 60 //받아온 json의 길이
+    const size = 360 //받아온 json의 길이
     for (let i = 1; i <= size; i++) {
       result.push(<tr key={i}>
                     <td>{i}</td>
@@ -43,7 +44,7 @@ function App() {
     <div>
       <img src={logo} alt="schoolLogo" className="schoolLogo" />
       <div className="container">
-        <Header/>
+        <Header login={isLogged} setLogin={setIsLogged} />
         <form>
           <label>분류 </label>
           <select>
@@ -70,7 +71,7 @@ function App() {
             <option>4반</option>
           </select>
 
-          <input type="button" value="조회하기" onClick={update} />
+          <input id="searchBtn" type="button" value="조회하기" onClick={update} />
           <ToastContainer
             position="top-left"
             autoClose={5000}
