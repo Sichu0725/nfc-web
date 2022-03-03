@@ -5,7 +5,7 @@ import React from "react"
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useState } from "react";
-import { useEffect } from "react";
+import { SearchResult } from "./components/searchResult";
 
 function App() {
   const [searchOption, setSearchOption] = useState({
@@ -13,13 +13,9 @@ function App() {
     grade : 'all',
     class : 'all'
   })
-  useEffect(() => {
-    //모든 사용자 조회
-    setNewPage(1)
-    console.log("Didmount")
-  },[])
+  let result = []
   const [isLogged, setIsLogged] = useState(0)
-  const [isNewPage, setNewPage] = useState(0)
+  const [data, setData] = useState([])
   const optionChageCate = (e) => {
     setSearchOption({
       category : e.target.value,
@@ -41,28 +37,28 @@ function App() {
       class : e.target.value
     })
   }
-  const example = () => {
-    const result = []
-    //api에서 받아온 json을 풀어서 저 형태로 넣어서 반환하면 됨
-    const size = 100 //받아온 json의 길이
-    for (let i = 1; i <= size; i++) {
-      result.push(
-        <tr key={i}>
-        <td>{i}</td>
-        <td>학생</td>
-        <td>2</td>
-        <td>1</td>
-        <td>18</td>
-        <td>최홍찬</td>
-        <td>X</td>
-        <td>2021-2-15 11:11:59</td>
-      </tr>
-      )
-    }
-    return result
-  }
-  const update = () => {
-    setNewPage(1)
+  const update = async() => {
+    await fetch("http://localhost:8888/inquiry").catch(err => console.log(err + "가 발생했다."))
+    .then((res) => res.json()).then(res => setData(res))
+    console.log(data, "data")
+    // let i = 0
+    // result = []
+    // result = data.map((id) => (
+    //   <tr key={i}>
+    //       <td>{i + 1}</td>
+    //       <td>학생</td>
+    //       {/* <td>{data[i].stu_id / 1000}</td>
+    //       <td>{data[i].stu_id / 100 % 10}</td>
+    //       <td>{data[i].stu_id % 100}</td> */}
+    //       <td>{data[i].stu_id}</td>
+    //       <td>{data[i].stu_id}</td>
+    //       <td>{data[i].stu_id}</td>
+    //       <td>최홍찬</td>
+    //       <td>X</td>
+    //       <td>{data[i].attend_time}</td>
+    //     </tr>
+    // ))
+    console.log(result, "1")
     toast.success('조회완료!', {
       position: "top-left",
       autoClose: 5000,
@@ -73,6 +69,7 @@ function App() {
       progress: undefined,
       transition: Bounce,
       });
+    //example(result)
   }
   return (
     <div>
@@ -105,7 +102,7 @@ function App() {
             <option value="four">4반</option>
           </select>
 
-          <input id="searchBtn" type="button" value="조회하기" onClick={update} />
+          <input id="searchBtn" type="button" value="조회하기" onClick={update}></input>
           <ToastContainer
             position="top-left"
             autoClose={5000}
@@ -133,7 +130,7 @@ function App() {
                 <th className="check">발열체크 여부</th>
                 <th className="time">시간</th>
               </tr>
-              {isNewPage === 1 ? example() : <tr></tr>}
+              <SearchResult data={data}/>
             </tbody>
           </table>
         </div>
