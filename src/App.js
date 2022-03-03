@@ -5,25 +5,59 @@ import React from "react"
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useState } from "react";
+import { useEffect } from "react";
 
 function App() {
+  const [searchOption, setSearchOption] = useState({
+    category : 'all',
+    grade : 'all',
+    class : 'all'
+  })
+  useEffect(() => {
+    //모든 사용자 조회
+    setNewPage(1)
+    console.log("Didmount")
+  },[])
   const [isLogged, setIsLogged] = useState(0)
   const [isNewPage, setNewPage] = useState(0)
+  const optionChageCate = (e) => {
+    setSearchOption({
+      category : e.target.value,
+      grade: searchOption.grade,
+      class : searchOption.class
+    })
+  }
+  const optionChageGrade = (e) => {
+    setSearchOption({
+      category : searchOption.category,
+      grade : e.target.value,
+      class : searchOption.class
+    })
+  }
+  const optionChageClass = (e) => {
+    setSearchOption({
+      category : searchOption.category,
+      grade : searchOption.grade,
+      class : e.target.value
+    })
+  }
   const example = () => {
     const result = []
     //api에서 받아온 json을 풀어서 저 형태로 넣어서 반환하면 됨
-    const size = 360 //받아온 json의 길이
+    const size = 100 //받아온 json의 길이
     for (let i = 1; i <= size; i++) {
-      result.push(<tr key={i}>
-                    <td>{i}</td>
-                    <td>학생</td>
-                    <td>2</td>
-                    <td>1</td>
-                    <td>20</td>
-                    <td>최홍찬</td>
-                    <td>X</td>
-                    <td>2021-2-15 11:11:59</td>
-                  </tr>)
+      result.push(
+        <tr key={i}>
+        <td>{i}</td>
+        <td>학생</td>
+        <td>2</td>
+        <td>1</td>
+        <td>18</td>
+        <td>최홍찬</td>
+        <td>X</td>
+        <td>2021-2-15 11:11:59</td>
+      </tr>
+      )
     }
     return result
   }
@@ -47,28 +81,28 @@ function App() {
         <Header login={isLogged} setLogin={setIsLogged} />
         <form>
           <label>분류 </label>
-          <select>
-            <option>전체</option>
-            <option>고등학교</option>
-            <option>중학교</option>
-            <option>선생님(교직원)</option>
+          <select value={searchOption.category} name="category" onChange={optionChageCate}>
+            <option value="all">전체</option>
+            <option value="high">고등학교</option>
+            <option value="middle">중학교</option>
+            <option value="teacher">선생님(교직원)</option>
           </select>
 
           <label> 학년 </label>
-          <select>
-            <option>전체</option>
-            <option>1학년</option>
-            <option>2학년</option>
-            <option>3학년</option>
+          <select value={searchOption.grade} name="grade" onChange={optionChageGrade}>
+            <option value="all">전체</option>
+            <option value="one">1학년</option>
+            <option value="two">2학년</option>
+            <option value="three">3학년</option>
           </select>
 
           <label> 반 </label>
-          <select>
-            <option>전체</option>
-            <option>1반</option>
-            <option>2반</option>
-            <option>3반</option>
-            <option>4반</option>
+          <select value={searchOption.class} name="class" onChange={optionChageClass}>
+            <option value="all">전체</option>
+            <option value="first">1반</option>
+            <option value="second">2반</option>
+            <option value="third">3반</option>
+            <option value="four">4반</option>
           </select>
 
           <input id="searchBtn" type="button" value="조회하기" onClick={update} />
