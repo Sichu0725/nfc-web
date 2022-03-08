@@ -19,37 +19,16 @@ export const CheckModal = (props) => {
   const close = () => {
     props.modal(0)
   }
+  
   return (
     <div>
       <hr/>
       <div className="modal">
         <h2>발열체크 현황 수동 체크</h2>
         <div className="check-form">
-          <label>분류 </label>
-          <select>
-            <option>전체</option>
-            <option>고등학교</option>
-            <option>중학교</option>
-            <option>선생님(교직원)</option>
-          </select>
-
-          <label> 학년 </label>
-          <select>
-            <option>전체</option>
-            <option>1학년</option>
-            <option>2학년</option>
-            <option>3학년</option>
-          </select>
-
-          <label> 반 </label>
-          <select>
-            <option>전체</option>
-            <option>1반</option>
-            <option>2반</option>
-            <option>3반</option>
-            <option>4반</option>
-          </select>
-
+          <input type="number" placeholder="학번을 입력해주세요" />
+          <input type="text" placeholder="이름을 입력해주세요" />
+          <input type="password" placeholder="인증코드를 입력해주세요" />
           <input id="checkBtn" type="button" value="등록" onClick={check} />
         </div>
         <img src={logo} alt="학교로고" className="modal-logo" />
